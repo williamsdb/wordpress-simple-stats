@@ -308,7 +308,7 @@ $countsDowYear = array_values($dowYear); // Extracts the counts as an array: [4,
                             <p><strong>Posts in <?php echo $lastYear; ?>:</strong> <?php echo $yearYear; ?> </p>
                             <p><strong>Month most likely to post:</strong> <?php echo $labelsMonthsYear[array_search(max($countsMonthsYear), $countsMonthsYear)]; ?></p>
                             <p><strong>Day most likely to post on:</strong> <?php echo $labelsDowYear[array_search(max($countsDowYear), $countsDowYear)]; ?> </p>
-                            <p><strong>Average per month:</strong> <?php echo $yearYear / 12; ?> </p>
+                            <p><strong>Average per month:</strong> <?php echo round($yearYear / 12, 1); ?> </p>
 
                             <!-- Column for Top 10 Tags -->
                             <div class="col-lg-5 col-md-6 column">
