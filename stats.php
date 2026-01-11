@@ -416,6 +416,9 @@ $countsDowYear = array_values($dowYear); // Extracts the counts as an array: [4,
                         <canvas id="barChartDow" width="800" height="400"></canvas>
                     </div>
                 </div>
+                <p><a href="/">Back to Home>>></a></p>
+                <p><small>Built by <a href="https://neilthompson.me">Neil Thompson</a>.</small></p>
+
             </div>
         </div>
     </main>
