@@ -19,12 +19,15 @@ error_reporting(E_ALL & ~E_NOTICE);
 // Set max execution time to unlimited
 set_time_limit(0);
 
+// Detect whether the script is running from the command line.
+$isCli = PHP_SAPI === 'cli' || PHP_SAPI === 'cli-server';
+
 // Your WordPress site URL
-$site_url = $_REQUEST['site'];
+$site_url = $isCli ? ($argv[1] ?? $_REQUEST['site'] ?? '') : $_REQUEST['site'];
 
 // Your WordPress username and password or application password
-$username = $_REQUEST['username'];
-$password = $_REQUEST['password'];
+$username = $isCli ? ($argv[2] ?? $_REQUEST['username'] ?? '') : $_REQUEST['username'];
+$password = $isCli ? ($argv[3] ?? $_REQUEST['password'] ?? '') : $_REQUEST['password'];
 
 // API endpoint to retrieve posts
 $api_url = $site_url . '/wp-json/wp/v2/';
@@ -265,6 +268,8 @@ $labelsMonthsYear = array_keys($monthsYear); // Extracts the months as an array:
 $countsMonthsYear = array_values($monthsYear); // Extracts the counts as an array: [4, 7, 4, ...]
 $labelsDowYear = array_keys($dowYear); // Extracts the days of the week as an array: [Monday, Tuesday, Wednesday, ...]
 $countsDowYear = array_values($dowYear); // Extracts the counts as an array: [4, 7, 4, ...]
+
+ob_start();
 
 ?>
 
@@ -606,3 +611,17 @@ $countsDowYear = array_values($dowYear); // Extracts the counts as an array: [4,
 </body>
 
 </html>
+
+<?php
+if ($isCli) {
+    $outputFileName = preg_replace('/^https?:\/\//i', '', rtrim($site_url, '/'));
+    $outputFileName = preg_replace('/[^a-zA-Z0-9.-]+/', '-', $outputFileName);
+    $outputFileName = trim($outputFileName, '-.');
+    $outputFileName = $outputFileName !== '' ? $outputFileName : 'website';
+
+    file_put_contents(__DIR__ . '/' . $outputFileName . '.html', ob_get_clean());
+    exit;
+}
+
+ob_end_flush();
+?>
